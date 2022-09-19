@@ -1,0 +1,22 @@
+
+.CartWidget{
+    display: flex;
+    background-color: #FFEEAF;
+    border-radius: 8px;
+    border-color: black;
+    
+}
+
+.Svg{
+    color: rgb(0, 0, 0);
+}
+
+.Number{
+    color: rgb(0, 0, 0);
+    margin-left: 3px;
+    font-size: 20px;
+}
+
+.CartWidget:hover{
+    opacity: 0.7;
+}
