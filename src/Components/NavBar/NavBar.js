@@ -15,8 +15,8 @@ const NavBar = () => {
           </div>
           <div className="BNav">
               <Link to='/category/celular' className="Button">Productos</Link>
-              <Link to='/category/tablet' className="Button">Contact</Link>
-              <Link to='/category/notebook' className="Button">About Us</Link>
+              <Link to='/category/contact' className="Button">Contact</Link>
+              <Link to='/category/about-us' className="Button">About Us</Link>
           </div>
           <CartWidget />
       </nav>

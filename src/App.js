@@ -2,9 +2,9 @@
 import './App.css';
  import NavBar from './Components/NavBar/NavBar' ; 
  import { useState } from 'react'
-import ItemListContainer from './components/ItemListContainer/ItemListContainer';
-import ItemDetailContainer from './components/ItemDetailContainer/ItemDetailContainer';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-do'
+import ItemListContainer from './Components/ItemListContainer/ItemListContainer';
+import ItemDetailContainer from './Components/ItemDetailContainer/ItemDetailContainer';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 
 
 
