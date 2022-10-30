@@ -1,58 +1,59 @@
-import { useState, useEffect } from 'react'
-import { getProducts } from '../../asyncMock'
+import './ItemListContainer.css'
+import { useState, useEffect, useContext } from 'react'
+
 import ItemList from '../ItemList/ItemList'
-import { useParams } from 'react-router-dom'
-import { getProductsByCategory } from '../../asyncMock'
+import { useParams } from 'react-router-dom' 
+import { getDocs, collection, query, where } from 'firebase/firestore'
+import { db } from '../../services'
+import { NotificationContext } from '../../notification/Notification'
 
 const ItemListContainer = ({ greeting }) => {
     const [products, setProducts] = useState([])
-    const [error, setError] = useState(false)
     const [loading, setLoading] = useState(true)
 
+    const { setNotification } = useContext(NotificationContext)
+
     const { categoryId } = useParams()
-    console.log(categoryId)
 
     useEffect(() => {
-        if(!categoryId) {
-            getProducts().then(res => {
-                console.log(res)
-                setProducts(res)
-            }).catch(error => {
-                console.log(error)
-                setError(true)
-            }).finally(() => {
-                setLoading(false)
-            })
-        } else {
-            getProductsByCategory(categoryId).then(res => {
-                console.log(res)
-                setProducts(res)
-            }).catch(error => {
-                console.log(error)
-                setError(true)
-            }).finally(() => {
-                setLoading(false)
-            })
+        setLoading(true)
+
+        const collectionRef = categoryId 
+        ? query(collection(db, 'products'), where('category', '==', categoryId))
+        : collection(db, 'products')
+
+
+getDocs(collectionRef).then(response => {
+    console.log(response)
+
+    const productsAdapted = response.docs.map(doc => {
+        const data = doc.data()
+        return { id: doc.id, ...data}
+    })
+
+    setProducts(productsAdapted)
+})
+.catch(error => {
+    setNotification('error', 'No se pueden obtener los productos')
+})
+.finally(() => {
+    setLoading(false)
+})
+
+
+
+        }, [categoryId])
+
+        if(loading && true) {
+            return <h1>Cargando productos...</h1>
         }
-    }, [categoryId])
-
-    // const productosTransformados = products.map(product => <li key={product.id}>{product.name}</li>)
-    if(loading) {
-        return <h1>Loading...</h1>
-    }
     
-
-    if(error) {
-        return <h1>Hubo un error</h1>
+        return (
+            <div>
+                <h1>{`${greeting} ${categoryId || ''}`}</h1>
+                <ItemList products={products} />
+            </div>
+        )
     }
-
-
-    return (
-        <div className="ItemListContainer">
-            <h1>{greeting}</h1>
-            <ItemList products={products}/>
-        </div>
-    )
-}
 
 export default ItemListContainer
